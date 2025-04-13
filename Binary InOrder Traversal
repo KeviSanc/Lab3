@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+// Helper function to perform the inorder traversal.
+void inorderTraversalHelper(struct TreeNode *root, int *result, int *size) {
+    if (root == NULL) return;
+
+    // Traverse the left subtree.
+    inorderTraversalHelper(root->left, result, size);
+
+    // Visit the current node.
+    result[*size] = root->val;
+    (*size)++;
+
+    // Traverse the right subtree.
+    inorderTraversalHelper(root->right, result, size);
+}
+
+// Main function to return the inorder traversal array.
+int *inorderTraversal(struct TreeNode *root, int *returnSize) {
+    // Allocate memory for the result array.
+    int *result = malloc(100 * sizeof(int)); // Maximum size is 100 based on problem constraints.
+    *returnSize = 0;
+
+    // Call the helper function.
+    inorderTraversalHelper(root, result, returnSize);
+
+    return result;
+}
+
+// Example usage.
+int main() {
+    struct TreeNode node3 = {3, NULL, NULL};
+    struct TreeNode node2 = {2, &node3, NULL};
+    struct TreeNode root = {1, NULL, &node2};
+
+    int returnSize;
+    int *result = inorderTraversal(&root, &returnSize);
+
+    printf("Inorder Traversal: ");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+
+    free(result);
+    return 0;
+}
